@@ -3,4 +3,7 @@ function handleLoginApi(email, password) {
   return axios.post("/api/login", { email, password });
 }
 
-export { handleLoginApi };
+const getALLUsers = (id) => {
+  return axios.get(`/api/get-all-users/?id=${id}`);
+};
+export { handleLoginApi, getALLUsers };
