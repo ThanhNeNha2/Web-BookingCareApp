@@ -3,12 +3,14 @@ import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./UserManage.scss";
 import { getALLUsers } from "../../services/userService";
+import ModalUser from "./ModalUser";
 class UserManage extends Component {
   state = {};
   constructor(props) {
     super(props);
     this.state = {
       arrUser: [],
+      isOpenModalUser: false,
     };
   }
   async componentDidMount() {
@@ -20,11 +22,36 @@ class UserManage extends Component {
     }
     console.log("hahahhahahahhaha", response);
   }
-
+  handleAddNewUser = () => {
+    this.setState({
+      isOpenModalUser: true,
+    });
+  };
+  toggleUserModal = () => {
+    this.setState({
+      isOpenModalUser: !this.state.isOpenModalUser,
+    });
+  };
   render() {
+    let arrUsers = this.state.arrUsers;
     return (
       <div className="users-container">
+        <ModalUser
+          isOpen={this.state.isOpenModalUser}
+          toggleFromParent={this.toggleUserModal}
+        />
         <div className="title"> Manage users with thanh </div>
+        <div>
+          <button
+            className=" mx-3 btn btn-success px-3"
+            onClick={() => {
+              this.handleAddNewUser();
+            }}
+          >
+            {" "}
+            Add user{" "}
+          </button>
+        </div>
         <div className="users-table mt-3 mx-3">
           <table id="customers">
             <tr>

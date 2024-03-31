@@ -25,3 +25,24 @@
   background-color: #04aa6d;
   color: white;
 }
+
+.modal-user-container {
+  .model-user-body {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      width: 49%;
+
+      input {
+        border-radius: 3px;
+        border: 1px solid grey;
+        height: 30px;
+        outline: none;
+        padding: 5px 0;
+      }
+    }
+  }
+}
