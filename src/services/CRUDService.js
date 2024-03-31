@@ -11,8 +11,8 @@ let createNewUser = async (data) => {
       await db.User.create({
         email: data.email,
         password: hashPassWordFormBcrypt,
-        firstName: data.firstname,
-        lastName: data.lastname,
+        firstName: data.firstName,
+        lastName: data.lastName,
         address: data.address,
         phonenumber: data.phonenumber,
         gender: data.gender === 1 ? true : false,
@@ -70,11 +70,12 @@ let updateUser = (data) => {
     try {
       let user = await db.User.findOne({
         where: { id: data.id },
+        raw: false,
       });
       if (user) {
         await user.update({
-          firstName: data.firstname,
-          lastName: data.lastname,
+          firstName: data.firstName,
+          lastName: data.lastName,
           address: data.address,
         });
         await user.save();
