@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./UserManage.scss";
-import { getALLUsers } from "../../services/userService";
+import { getALLUsers, createNewUserService } from "../../services/userService";
 import ModalUser from "./ModalUser";
 class UserManage extends Component {
   state = {};
@@ -14,14 +14,18 @@ class UserManage extends Component {
     };
   }
   async componentDidMount() {
+    await this.getAllUserFromReact();
+  }
+
+  getAllUserFromReact = async () => {
     let response = await getALLUsers("ALL");
     if (response && response.errCode === 0) {
       this.setState({
         arrUser: response.users,
       });
     }
-    console.log("hahahhahahahhaha", response);
-  }
+  };
+
   handleAddNewUser = () => {
     this.setState({
       isOpenModalUser: true,
@@ -32,6 +36,23 @@ class UserManage extends Component {
       isOpenModalUser: !this.state.isOpenModalUser,
     });
   };
+
+  createNewUser = async (data) => {
+    try {
+      let response = await createNewUserService(data);
+
+      if (response && response.errCode !== 0) {
+        alert(response.message);
+      } else {
+        await this.getAllUserFromReact();
+        this.setState({
+          isOpenModalUser: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
     let arrUsers = this.state.arrUsers;
     return (
@@ -39,6 +60,7 @@ class UserManage extends Component {
         <ModalUser
           isOpen={this.state.isOpenModalUser}
           toggleFromParent={this.toggleUserModal}
+          createNewUser={this.createNewUser}
         />
         <div className="title"> Manage users with thanh </div>
         <div>
@@ -54,39 +76,41 @@ class UserManage extends Component {
         </div>
         <div className="users-table mt-3 mx-3">
           <table id="customers">
-            <tr>
-              <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Address</th>
-              <th>Active</th>
-            </tr>
+            <tbody>
+              <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Active</th>
+              </tr>
 
-            {this.state.arrUser.map((user) => {
-              return (
-                <tr>
-                  <td>{user.email}</td>
-                  <td> {user.firstName}</td>
-                  <td>{user.lastName}</td>
-                  <td>{user.address}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      style={{ padding: "0 10px" }}
-                    >
-                      <i class="fas fa-pencil-alt"></i>{" "}
-                    </button>
+              {this.state.arrUser.map((user, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{user.email}</td>
+                    <td> {user.firstName}</td>
+                    <td>{user.lastName}</td>
+                    <td>{user.address}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        style={{ padding: "0 10px" }}
+                      >
+                        <i className="fas fa-pencil-alt"></i>{" "}
+                      </button>
 
-                    <button
-                      className="btn btn-success"
-                      style={{ padding: "0 10px" }}
-                    >
-                      <i class="fas fa-trash"></i>{" "}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                      <button
+                        className="btn btn-success"
+                        style={{ padding: "0 10px" }}
+                      >
+                        <i className="fas fa-trash"></i>{" "}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         </div>
       </div>
