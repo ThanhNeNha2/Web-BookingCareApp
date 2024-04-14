@@ -6,8 +6,10 @@ import {
   getALLUsers,
   createNewUserService,
   deleteUserService,
+  editUserService,
 } from "../../services/userService";
 import ModalUser from "./ModalUser";
+import ModelEditUser from "./ModelEditUser";
 import { emitter } from "../../utils/emitter";
 class UserManage extends Component {
   state = {};
@@ -16,6 +18,8 @@ class UserManage extends Component {
     this.state = {
       arrUser: [],
       isOpenModalUser: false,
+      isOpenModalEditUser: false,
+      userEdit: {},
     };
   }
   async componentDidMount() {
@@ -41,7 +45,11 @@ class UserManage extends Component {
       isOpenModalUser: !this.state.isOpenModalUser,
     });
   };
-
+  toggleUserEditModal = () => {
+    this.setState({
+      isOpenModalEditUser: !this.state.isOpenModalEditUser,
+    });
+  };
   createNewUser = async (data) => {
     try {
       let response = await createNewUserService(data);
@@ -73,6 +81,28 @@ class UserManage extends Component {
     }
   };
 
+  handleEditUser = async (item) => {
+    this.setState({
+      isOpenModalEditUser: true,
+      userEdit: item,
+    });
+  };
+
+  doEditUser = async (user) => {
+    try {
+      let response = await editUserService(user);
+      if (response && response.errCode === 0) {
+        this.setState({
+          isOpenModalEditUser: false,
+        });
+        await this.getAllUserFromReact();
+      } else {
+        alert(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
     let arrUsers = this.state.arrUsers;
     return (
@@ -82,6 +112,14 @@ class UserManage extends Component {
           toggleFromParent={this.toggleUserModal}
           createNewUser={this.createNewUser}
         />
+        {this.state.isOpenModalEditUser && (
+          <ModelEditUser
+            isOpen={this.state.isOpenModalEditUser}
+            toggleFromParent={this.toggleUserEditModal}
+            currentUser={this.state.userEdit}
+            editUser={this.doEditUser}
+          />
+        )}
         <div className="title"> Manage users with thanh </div>
         <div>
           <button
@@ -116,6 +154,9 @@ class UserManage extends Component {
                       <button
                         className="btn btn-danger"
                         style={{ padding: "0 10px" }}
+                        onClick={() => {
+                          this.handleEditUser(user);
+                        }}
                       >
                         <i className="fas fa-pencil-alt"></i>{" "}
                       </button>

@@ -3,7 +3,8 @@ import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { emitter } from "../../utils/emitter";
-class ModalUser extends Component {
+import _ from "lodash";
+class ModalEditUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +20,7 @@ class ModalUser extends Component {
   listenToEmitter() {
     emitter.on("EVENT_CLEAR_MODAL_DATA", () => {
       this.setState({
+        id: "",
         email: "",
         password: "",
         firstName: "",
@@ -27,7 +29,19 @@ class ModalUser extends Component {
       });
     });
   }
-  componentDidMount() {}
+  componentDidMount() {
+    let user = this.props.currentUser;
+    if (user && !_.isEmpty(user)) {
+      this.setState({
+        id: user.id,
+        email: user.email,
+        password: "hardcode",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        address: user.address,
+      });
+    }
+  }
   toggle = () => {
     this.props.toggleFromParent();
   };
@@ -55,10 +69,10 @@ class ModalUser extends Component {
     return isValid;
   };
 
-  handleAddNewUser = () => {
+  handleSaveUser = () => {
     let isValid = this.checkValidateInput();
     if (isValid === true) {
-      this.props.createNewUser(this.state);
+      this.props.editUser(this.state);
     }
   };
   render() {
@@ -79,7 +93,7 @@ class ModalUser extends Component {
             this.toggle();
           }}
         >
-          Modal title
+          Modal Edit User
         </ModalHeader>
         <ModalBody>
           <div className="model-user-body">
@@ -91,6 +105,7 @@ class ModalUser extends Component {
                   this.handleOnchangeInput(event, "email");
                 }}
                 value={this.state.email}
+                disabled
               />
             </div>
 
@@ -102,6 +117,7 @@ class ModalUser extends Component {
                   this.handleOnchangeInput(event, "password");
                 }}
                 value={this.state.password}
+                disabled
               />
             </div>
             <div className="input-container">
@@ -140,10 +156,10 @@ class ModalUser extends Component {
           <Button
             color="primary"
             onClick={() => {
-              this.handleAddNewUser();
+              this.handleSaveUser();
             }}
           >
-            Add new
+            Save change
           </Button>{" "}
           <Button
             color="secondary"
@@ -167,4 +183,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEditUser);
