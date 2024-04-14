@@ -60,12 +60,20 @@
           color: orange;
           opacity: 1;
         }
+        &:hover {
+          opacity: 1;
+          color: orange;
+        }
       }
       .language-en {
         margin: 0 10px;
         opacity: 0.3;
         cursor: pointer;
         &.active {
+          opacity: 1;
+          color: rgb(79, 16, 255);
+        }
+        &:hover {
           opacity: 1;
           color: rgb(79, 16, 255);
         }
@@ -124,7 +132,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-
+    padding-bottom: 10px;
     background-image: linear-gradient(
       rgba(255, 255, 255, 0.1),
       rgba(255, 255, 255, 0.9),
