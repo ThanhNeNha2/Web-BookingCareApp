@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { getAllCodeService } from "../../services/userService";
+import { editUserService, getAllCodeService } from "../../services/userService";
 import { createNewUserService } from "../../services/userService";
 import { getALLUsers } from "../../services/userService";
 import { deleteUserService } from "../../services/userService";
@@ -158,4 +158,31 @@ export const deleteUserSuccess = () => ({
 });
 export const deleteUserFailed = () => ({
   type: actionTypes.DELETE_USER_FAILED,
+});
+
+
+// EDIT  
+
+export const editUser = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await editUserService(userId);
+
+      if (res && res.errCode === 0) {
+        dispatch(editUserSuccess());
+        dispatch(fetchAllUsersStart());
+      } else {
+        dispatch(editUserFailed());
+      }
+    } catch (e) {
+      dispatch(editUserFailed());
+      console.log("editUserFailed error", e);
+    }
+  };
+};
+export const editUserSuccess = () => ({
+  type: actionTypes.EDIT_USER_SUCCESS,
+});
+export const editUserFailed = () => ({
+  type: actionTypes.EDIT_USER_FAILED,
 });
