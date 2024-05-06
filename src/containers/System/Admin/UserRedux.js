@@ -6,6 +6,8 @@ import { LANGUAGES } from "../../../utils";
 import * as actions from "../../../store/actions";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
+import TableManageUser from "./TableManageUser";
+import { toast } from "react-toastify";
 class UserRedux extends Component {
   constructor(props) {
     super(props);
@@ -73,6 +75,16 @@ class UserRedux extends Component {
             : "",
       });
     }
+    if (prevProps.listUsers !== this.props.listUsers) {
+      this.setState({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        address: "",
+      });
+    }
   }
   handleOnchangeImage = (event) => {
     let data = event.target.files;
@@ -107,6 +119,7 @@ class UserRedux extends Component {
       roleId: this.state.role,
       positionId: this.state.position,
     });
+    toast.success(" Wow so easy!");
   };
 
   onChangeInput = (event, id) => {
@@ -325,7 +338,7 @@ class UserRedux extends Component {
                   ></div>
                 </div>
               </div>
-              <div className="col-12 mt-3">
+              <div className="col-12 mt-3 mb-3">
                 <button
                   className="btn btn-primary"
                   onClick={() => {
@@ -335,6 +348,7 @@ class UserRedux extends Component {
                   <FormattedMessage id="manage-user.save" />
                 </button>
               </div>
+              <TableManageUser />
             </div>
           </div>
         </div>
@@ -356,6 +370,7 @@ const mapStateToProps = (state) => {
     isLoadingGender: state.admin.isLoadingGender,
     positionsRedux: state.admin.positions,
     roleRedux: state.admin.roles,
+    listUsers: state.admin.users,
   };
 };
 
@@ -365,6 +380,7 @@ const mapDispatchToProps = (dispatch) => {
     getPositionStart: () => dispatch(actions.fetchPositionStart()),
     getRoleStart: () => dispatch(actions.fetchRoleStart()),
     createNewUser: (data) => dispatch(actions.createNewUser(data)),
+    fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
   };
 };
 
