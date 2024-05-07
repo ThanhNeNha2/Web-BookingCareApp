@@ -3,6 +3,8 @@ import { editUserService, getAllCodeService } from "../../services/userService";
 import { createNewUserService } from "../../services/userService";
 import { getALLUsers } from "../../services/userService";
 import { deleteUserService } from "../../services/userService";
+import { toast } from "react-toastify";
+
 // export const fetchGenderStart = () => ({
 //   type: actionTypes.FETCH_GENDER_START,
 // });
@@ -93,8 +95,10 @@ export const createNewUser = (data) => {
       if (res && res.errCode === 0) {
         dispatch(saveUserSuccess());
         dispatch(fetchAllUsersStart());
+        toast.success(" Create user success!");
       } else {
         dispatch(saveUserFailed());
+        toast.error(" Create user failed!");
       }
     } catch (e) {
       dispatch(saveUserFailed());
@@ -144,8 +148,10 @@ export const deleteUser = (userId) => {
       if (res && res.errCode === 0) {
         dispatch(deleteUserSuccess());
         dispatch(fetchAllUsersStart());
+        toast.success(" Delete user success!");
       } else {
         dispatch(deleteUserFailed());
+        toast.error(" Delete user failed!");
       }
     } catch (e) {
       dispatch(deleteUserFailed());
@@ -160,19 +166,19 @@ export const deleteUserFailed = () => ({
   type: actionTypes.DELETE_USER_FAILED,
 });
 
-
-// EDIT  
+// EDIT
 
 export const editUser = (userId) => {
   return async (dispatch, getState) => {
     try {
       let res = await editUserService(userId);
-
       if (res && res.errCode === 0) {
         dispatch(editUserSuccess());
         dispatch(fetchAllUsersStart());
+        toast.success(" Update user success!");
       } else {
         dispatch(editUserFailed());
+        toast.error(" Update user failed!");
       }
     } catch (e) {
       dispatch(editUserFailed());
