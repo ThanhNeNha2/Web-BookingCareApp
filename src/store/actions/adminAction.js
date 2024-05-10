@@ -2,7 +2,10 @@ import actionTypes from "./actionTypes";
 import { editUserService, getAllCodeService } from "../../services/userService";
 import { createNewUserService } from "../../services/userService";
 import { getALLUsers } from "../../services/userService";
-import { deleteUserService } from "../../services/userService";
+import {
+  deleteUserService,
+  getTopDoctorHomeService,
+} from "../../services/userService";
 import { toast } from "react-toastify";
 
 // export const fetchGenderStart = () => ({
@@ -192,3 +195,28 @@ export const editUserSuccess = () => ({
 export const editUserFailed = () => ({
   type: actionTypes.EDIT_USER_FAILED,
 });
+
+// BAC SI NOI BAT
+
+export const fetchTopDoctor = () => {
+  return async (dispatch, getState) => {
+    try {
+      let res = await getTopDoctorHomeService(10);
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
+          dataDoctors: res.data,
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_TOP_DOCTOR_FAILED,
+        });
+      }
+    } catch (error) {
+      console.log(" FETCH_TOP_DOCTOR_FAILED ", error);
+      dispatch({
+        type: actionTypes.FETCH_TOP_DOCTOR_FAILED,
+      });
+    }
+  };
+};

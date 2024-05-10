@@ -13,10 +13,11 @@ import HomeFooter from "./HomeFooter";
 class HomePage extends Component {
   render() {
     let settings = {
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 4,
       slidesToScroll: 1,
+      dots: false,
     };
     return (
       <div>

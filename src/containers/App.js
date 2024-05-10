@@ -75,8 +75,6 @@ class App extends Component {
           pauseOnHover
           theme="light"
         />
-
-        <ToastContainer />
       </Fragment>
     );
   }
