@@ -17,6 +17,7 @@ import HomePage from "./HomePage/HomePage";
 import CustomScrollbars from "../components/CustomScrollbars.js";
 import "react-toastify/dist/ReactToastify.css";
 import DetailDoctor from "./Patient/Doctor/DetailDoctor.js";
+import Doctor from "../routes/Doctor.js";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -56,6 +57,10 @@ class App extends Component {
                   <Route
                     path={path.SYSTEM}
                     component={userIsAuthenticated(System)}
+                  />
+                  <Route
+                    path={path.DOCTOR}
+                    component={userIsAuthenticated(Doctor)}
                   />
                   <Route path={path.HOMEPAGE} component={HomePage} />
                   <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
