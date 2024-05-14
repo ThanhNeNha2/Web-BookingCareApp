@@ -64,23 +64,42 @@ let saveDetailInforDoctor = (inputData) => {
       if (
         !inputData.doctorId ||
         !inputData.contentMarkdown ||
-        !inputData.contentHTML
+        !inputData.contentHTML ||
+        !inputData.action
       ) {
         resolve({
           errCode: 1,
           errMessage: "Missing parameter",
         });
       } else {
-        await db.Markdown.create({
-          contentHTML: inputData.contentHTML,
-          contentMarkdown: inputData.contentMarkdown,
-          description: inputData.description,
-          doctorId: inputData.doctorId,
-        });
-        resolve({
-          errCode: 0,
-          errMessage: " Save infor doctor succeed!",
-        });
+        if (inputData.action === "CREATE") {
+          await db.Markdown.create({
+            contentHTML: inputData.contentHTML,
+            contentMarkdown: inputData.contentMarkdown,
+            description: inputData.description,
+            doctorId: inputData.doctorId,
+          });
+          resolve({
+            errCode: 0,
+            errMessage: " Save infor doctor succeed!",
+          });
+        } else if (inputData.action === "EDIT") {
+          let doctorMarkdown = await db.Markdown.findOne({
+            where: { doctorId: inputData.doctorId },
+            raw: false,
+          });
+          if (doctorMarkdown) {
+            doctorMarkdown.contentHTML = inputData.contentHTML;
+            doctorMarkdown.contentMarkdown = inputData.contentMarkdown;
+            doctorMarkdown.description = inputData.description;
+
+            await doctorMarkdown.save();
+          }
+          resolve({
+            errCode: 0,
+            errMessage: " Update doctor succeed!",
+          });
+        }
       }
     } catch (error) {
       reject(error);
