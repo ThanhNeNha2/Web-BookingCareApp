@@ -38,7 +38,6 @@ class Login extends Component {
       }
       if (data && data.errCode === 0) {
         this.props.userLoginSuccess(data.user);
-        console.log("success");
       }
     } catch (e) {
       if (e.response) {
@@ -50,6 +49,11 @@ class Login extends Component {
   };
   handleShowHidePassword = () => {
     this.setState({ isShowPassword: !this.state.isShowPassword });
+  };
+  submitKey = (e) => {
+    if (e.key === "Enter") {
+      this.handleLogin();
+    }
   };
   render() {
     return (
@@ -79,6 +83,9 @@ class Login extends Component {
                   value={this.state.password}
                   onChange={(e) => {
                     this.handleOnChangePassword(e);
+                  }}
+                  onKeyPress={(e) => {
+                    this.submitKey(e);
                   }}
                 />
                 <div
