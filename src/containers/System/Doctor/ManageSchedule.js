@@ -98,7 +98,8 @@ class ManageSchedule extends Component {
       toast.error("Invalidate doctor !");
       return;
     }
-    let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+    // let formateDate = moment(currentDate).unix();
+    let formateDate = new Date(currentDate).getTime();
     if (rangeTime && rangeTime.length > 0) {
       let selectedTime = rangeTime.filter((item) => item.isSelected === true);
       if (selectedTime && selectedTime.length > 0) {
@@ -114,6 +115,12 @@ class ManageSchedule extends Component {
         return;
       }
     }
+    let res = await saveBulkScheduleDoctor({
+      arrSchedule: result,
+      doctorId: selectedDoctor.value,
+      formateDate: formateDate,
+    });
+    console.log("checkk phan hoi ", res);
   };
 
   render() {
