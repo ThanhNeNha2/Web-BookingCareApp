@@ -10,6 +10,7 @@ class DoctorSchedule extends Component {
     super(props);
     this.state = {
       allDays: [],
+      allAvalableTime: [],
     };
   }
 
@@ -52,34 +53,77 @@ class DoctorSchedule extends Component {
       let doctorId = this.props.doctorIdFromParent;
       let date = event.target.value;
       let res = await getScheduleDoctorByDate(doctorId, date);
-      console.log("check data hihi", res);
+      console.log("check time ", res);
+      if (res && res.errCode === 0) {
+        this.setState({
+          allAvalableTime: res.data ? res.data : [],
+        });
+      }
     }
   };
   render() {
-    let { allDays } = this.state;
+    let { allDays, allAvalableTime } = this.state;
     return (
       <div className="doctor-schedule-container">
-        <div className="all-schedule">
-          <select
-            className="form-control writeSelect"
-            onChange={(event) => {
-              this.handleOnchangeSelect(event);
-            }}
-          >
-            {allDays &&
-              allDays.length > 0 &&
-              allDays.map((item, index) => {
-                return (
-                  <option key={index} value={item.value}>
-                    {" "}
-                    {item.label}{" "}
-                  </option>
-                );
-              })}
-          </select>
-        </div>
+        <div className="doctor-schedule-left">
+          <div className="all-schedule">
+            <select
+              className="form-control writeSelect"
+              onChange={(event) => {
+                this.handleOnchangeSelect(event);
+              }}
+            >
+              {allDays &&
+                allDays.length > 0 &&
+                allDays.map((item, index) => {
+                  return (
+                    <option key={index} value={item.value}>
+                      {" "}
+                      {item.label}{" "}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
 
-        <div className="all-available-time"></div>
+          <div className="all-available-time">
+            <div className="text-calender">
+              <span>
+                {" "}
+                <i className="fas fa-calendar-alt"></i> Lịch khám{" "}
+              </span>
+            </div>
+            <div className="time-content">
+              {allAvalableTime && allAvalableTime.length > 0 ? (
+                allAvalableTime.map((item, index) => {
+                  return (
+                    <button key={index} className="btn btn-warning mt-3 mr-3">
+                      {this.props.language === LANGUAGES.VI
+                        ? item.timeTypeData.valueVi
+                        : item.timeTypeData.valueEn}
+                    </button>
+                  );
+                })
+              ) : (
+                <h4 style={{ marginTop: "10px" }}>
+                  {" "}
+                  Không có lịch khám ngày này !{" "}
+                </h4>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="doctor-schedule-right">
+          <h4 className="right-threads">ĐỊA CHỈ KHÁM</h4>
+          <b>
+            Phòng khám Chuyên khoa trị giãn tĩnh mạch An Viên - Bệnh viện Đa
+            khoa An Việt
+          </b>
+          <p>Số 6, ngõ 1 Trường Chinh, Thanh Xuân, Hà Nội</p>
+          <p>
+            <b>GIÁ KHÁM</b>: Miễn phí <a href="#">Xem chi tiết</a>
+          </p>
+        </div>
       </div>
     );
   }

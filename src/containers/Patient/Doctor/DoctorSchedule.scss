@@ -1,8 +1,32 @@
 .doctor-schedule-container {
-  .all-schedule {
+  margin-bottom: 50px;
+  border-bottom: 1px solid rgb(170, 170, 170);
+
+  display: flex;
+  .doctor-schedule-left {
     width: 50%;
-    .writeSelect {
-      text-transform: capitalize;
+
+    .all-schedule {
+      width: 60%;
+      .writeSelect {
+        text-transform: capitalize;
+      }
+    }
+    .all-available-time {
+      .text-calender {
+        margin: 10px 0 0 0;
+      }
+    }
+  }
+  .doctor-schedule-right {
+    padding: 10px;
+    border-left: 1px solid rgb(170, 170, 170);
+    .right-threads {
+      font-weight: 500;
+    }
+    a {
+      text-decoration: none;
+      font-weight: 600;
     }
   }
 }
