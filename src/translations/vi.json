@@ -63,5 +63,8 @@
     "chosse-day": "Chọn ngày",
     "chosse-doctor": "Chọn bác sĩ",
     "save": "Xác nhận"
+  },
+  "Patient": {
+    "calendar": "Lịch khám"
   }
 }

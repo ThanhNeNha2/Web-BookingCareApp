@@ -63,5 +63,8 @@
     "chosse-day": "Choose day",
     "chosse-doctor": "Choose doctor",
     "save": "Confirm"
+  },
+  "Patient": {
+    "calendar": "Calendar"
   }
 }

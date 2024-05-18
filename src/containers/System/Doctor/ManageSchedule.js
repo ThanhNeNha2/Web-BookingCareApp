@@ -120,13 +120,17 @@ class ManageSchedule extends Component {
       doctorId: selectedDoctor.value,
       formateDate: formateDate,
     });
-    console.log("checkk phan hoi ", res);
+    if (res && res.errCode === 0) {
+      toast.success(" Create schedule success!");
+    } else {
+      toast.error(" Create schedule failed!");
+    }
   };
 
   render() {
     const { isLoggedIn, language } = this.props;
-
     let { rangeTime, selectedDoctor } = this.state;
+    let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
     return (
       <div className="manage-schedule-container">
         <div className="m-s-title">
@@ -154,7 +158,7 @@ class ManageSchedule extends Component {
                 onChange={this.handleOnchangeDatePicker}
                 className="form-control"
                 value={this.state.currentDate}
-                minDate={new Date()}
+                minDate={new Date().setHours(0, 0, 0, 0)}
               />
             </div>
             <div className="col-12 pick-hour-container">
