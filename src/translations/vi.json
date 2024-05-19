@@ -66,5 +66,15 @@
   },
   "Patient": {
     "calendar": "Lịch khám"
+  },
+  "manage-doctor": {
+    "chosse-doctor": "Chọn bác sĩ",
+    "input-infomation": "Thông tin giới thiệu",
+    "chosse-price": "Chọn giá khám",
+    "chosse-payment": "Chọn phương thức thanh toán ",
+    "chosse-province": "Chọn tỉnh thành",
+    "name-clicin": "Tên phòng khám",
+    "clinic-address": "Địa chỉ phòng khám",
+    "note": "Ghi chú thêm"
   }
 }

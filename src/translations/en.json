@@ -66,5 +66,15 @@
   },
   "Patient": {
     "calendar": "Calendar"
+  },
+  "manage-doctor": {
+    "chosse-doctor": "Choose a doctor",
+    "input-infomation": "Introductory information",
+    "chosse-price": "Choose the examination price",
+    "chosse-payment": "Select a payment method",
+    "chosse-province": "Select province",
+    "name-clicin": "Name clicin",
+    "clinic-address": "Clicin address",
+    "note": "Note "
   }
 }
