@@ -30,4 +30,11 @@
   .detail-infor-doctor {
     margin-top: 15px;
   }
+  .schedule-doctor {
+    display: flex;
+    width: 100%;
+    .content-left {
+      width: 65%;
+    }
+  }
 }

@@ -1,9 +1,6 @@
 .doctor-schedule-container {
-  border-bottom: 1px solid rgb(170, 170, 170);
   display: flex;
   .doctor-schedule-left {
-    width: 50%;
-
     .all-schedule {
       width: 60%;
       .writeSelect {
@@ -17,17 +14,6 @@
       .time-content {
         padding: 0 0 15px 0;
       }
-    }
-  }
-  .doctor-schedule-right {
-    padding: 0 0 0 15px;
-    border-left: 1px solid rgb(170, 170, 170);
-    .right-threads {
-      font-weight: 500;
-    }
-    a {
-      text-decoration: none;
-      font-weight: 600;
     }
   }
 }

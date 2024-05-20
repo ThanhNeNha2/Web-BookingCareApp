@@ -6,6 +6,7 @@ import localization from "moment/locale/vi";
 import { LANGUAGES } from "../../../utils";
 import { getScheduleDoctorByDate } from "../../../services/userService";
 import { FormattedMessage } from "react-intl";
+import DoctorExtraInfor from "./DoctorExtraInfor";
 class DoctorSchedule extends Component {
   constructor(props) {
     super(props);
@@ -145,17 +146,7 @@ class DoctorSchedule extends Component {
             </div>
           </div>
         </div>
-        <div className="doctor-schedule-right">
-          <h4 className="right-threads">ĐỊA CHỈ KHÁM</h4>
-          <b>
-            Phòng khám Chuyên khoa trị giãn tĩnh mạch An Viên - Bệnh viện Đa
-            khoa An Việt
-          </b>
-          <p>Số 6, ngõ 1 Trường Chinh, Thanh Xuân, Hà Nội</p>
-          <p>
-            <b>GIÁ KHÁM</b>: Miễn phí <a href="#">Xem chi tiết</a>
-          </p>
-        </div>
+        {/* <div className="doctor-schedule-rightt"></div> */}
       </div>
     );
   }

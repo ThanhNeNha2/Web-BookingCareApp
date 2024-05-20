@@ -72,7 +72,34 @@ class ManageDoctor extends Component {
 
   handleChangeSelect = async (selectedOption) => {
     this.setState({ selectedOption });
+    let { listPayment, listProvince, listPrice } = this.state;
     let res = await getDetailInforDoctor(selectedOption.value);
+    let nameClinic = "",
+      provinceId = "",
+      priceId = "",
+      paymentId = "",
+      note = "",
+      addressClinic = "",
+      findPaymentId = "",
+      findPriceId = "",
+      findProvinceId = "";
+    if (res && res.data && res.data.Doctor_Infor) {
+      provinceId = res.data.Doctor_Infor.provinceId;
+      priceId = res.data.Doctor_Infor.priceId;
+      paymentId = res.data.Doctor_Infor.paymentId;
+      nameClinic = res.data.Doctor_Infor.nameClinic;
+      addressClinic = res.data.Doctor_Infor.addressClinic;
+      note = res.data.Doctor_Infor.note;
+      findPaymentId = listPayment.find((item) => {
+        return item.value === paymentId;
+      });
+      findPriceId = listPrice.find((item) => {
+        return item.value === priceId;
+      });
+      findProvinceId = listProvince.find((item) => {
+        return item.value === provinceId;
+      });
+    }
     console.log("check res ", res);
     if (res && res.errCode === 0 && res.data && res.data.Markdown) {
       let Markdown = res.data.Markdown;
@@ -81,6 +108,12 @@ class ManageDoctor extends Component {
         contentMarkdown: Markdown.contentMarkdown,
         description: Markdown.description,
         hasOldData: true,
+        nameClinic: nameClinic,
+        addressClinic: addressClinic,
+        note: note,
+        selectedPayment: findPaymentId,
+        selectedPrice: findPriceId,
+        selectedProvince: findProvinceId,
       });
     } else {
       this.setState({
@@ -88,6 +121,12 @@ class ManageDoctor extends Component {
         contentMarkdown: "",
         description: "",
         hasOldData: false,
+        nameClinic: "",
+        addressClinic: "",
+        note: "",
+        selectedPayment: "",
+        selectedPrice: "",
+        selectedProvince: "",
       });
     }
   };
