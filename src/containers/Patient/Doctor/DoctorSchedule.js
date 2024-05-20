@@ -7,12 +7,15 @@ import { LANGUAGES } from "../../../utils";
 import { getScheduleDoctorByDate } from "../../../services/userService";
 import { FormattedMessage } from "react-intl";
 import DoctorExtraInfor from "./DoctorExtraInfor";
+import BookingModal from "./Modal/BookingModal";
 class DoctorSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
       allDays: [],
       allAvalableTime: [],
+      isOpenModalBooking: false,
+      dataScheduleTimeModal: {},
     };
   }
 
@@ -79,75 +82,99 @@ class DoctorSchedule extends Component {
       }
     }
   };
+  handleClickScheduleTime = (time) => {
+    this.setState({
+      isOpenModalBooking: true,
+      dataScheduleTimeModal: time,
+    });
+  };
+  closeBookingClose = () => {
+    this.setState({
+      isOpenModalBooking: false,
+    });
+  };
   render() {
     let { allDays, allAvalableTime } = this.state;
 
     return (
-      <div className="doctor-schedule-container">
-        <div className="doctor-schedule-left">
-          <div className="all-schedule">
-            <select
-              className="form-control writeSelect"
-              onChange={(event) => {
-                this.handleOnchangeSelect(event);
-              }}
-            >
-              {allDays &&
-                allDays.length > 0 &&
-                allDays.map((item, index) => {
-                  return (
-                    <option key={index} value={item.value}>
-                      {" "}
-                      {item.label}{" "}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-
-          <div className="all-available-time">
-            <div className="text-calender">
-              <span>
-                {" "}
-                <i
-                  className="fas fa-calendar-alt"
-                  style={{ marginRight: "5px" }}
-                ></i>
-                <FormattedMessage id="Patient.calendar" />{" "}
-              </span>
-            </div>
-            <div className="time-content">
-              {allAvalableTime && allAvalableTime.length > 0 ? (
-                <>
-                  {allAvalableTime.map((item, index) => {
+      <>
+        <div className="doctor-schedule-container">
+          <div className="doctor-schedule-left">
+            <div className="all-schedule">
+              <select
+                className="form-control writeSelect"
+                onChange={(event) => {
+                  this.handleOnchangeSelect(event);
+                }}
+              >
+                {allDays &&
+                  allDays.length > 0 &&
+                  allDays.map((item, index) => {
                     return (
-                      <button key={index} className="btn btn-warning mt-3 mr-3">
-                        {this.props.language === LANGUAGES.VI
-                          ? item.timeTypeData.valueVi
-                          : item.timeTypeData.valueEn}
-                      </button>
+                      <option key={index} value={item.value}>
+                        {" "}
+                        {item.label}{" "}
+                      </option>
                     );
                   })}
-                  <div>
-                    {" "}
-                    Chọn{" "}
-                    <i
-                      className="far fa-hand-point-up"
-                      style={{ marginTop: "10px" }}
-                    ></i>{" "}
-                    và đặt (Phí đặt lịch 0đ)
-                  </div>
-                </>
-              ) : (
-                <h4 style={{ marginTop: "10px" }}>
-                  <i>Không có lịch khám ngày này ! </i>
-                </h4>
-              )}
+              </select>
+            </div>
+
+            <div className="all-available-time">
+              <div className="text-calender">
+                <span>
+                  {" "}
+                  <i
+                    className="fas fa-calendar-alt"
+                    style={{ marginRight: "5px" }}
+                  ></i>
+                  <FormattedMessage id="Patient.calendar" />{" "}
+                </span>
+              </div>
+              <div className="time-content">
+                {allAvalableTime && allAvalableTime.length > 0 ? (
+                  <>
+                    {allAvalableTime.map((item, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className="btn btn-warning mt-3 mr-3"
+                          onClick={() => {
+                            this.handleClickScheduleTime(item);
+                          }}
+                        >
+                          {this.props.language === LANGUAGES.VI
+                            ? item.timeTypeData.valueVi
+                            : item.timeTypeData.valueEn}
+                        </button>
+                      );
+                    })}
+                    <div>
+                      {" "}
+                      Chọn{" "}
+                      <i
+                        className="far fa-hand-point-up"
+                        style={{ marginTop: "10px" }}
+                      ></i>{" "}
+                      và đặt (Phí đặt lịch 0đ)
+                    </div>
+                  </>
+                ) : (
+                  <h4 style={{ marginTop: "10px" }}>
+                    <i>Không có lịch khám ngày này ! </i>
+                  </h4>
+                )}
+              </div>
             </div>
           </div>
+          {/* <div className="doctor-schedule-rightt"></div> */}
         </div>
-        {/* <div className="doctor-schedule-rightt"></div> */}
-      </div>
+        <BookingModal
+          isOpenModal={this.state.isOpenModalBooking}
+          closeBookingClose={this.closeBookingClose}
+          dataTime={this.state.dataScheduleTimeModal}
+        />
+      </>
     );
   }
 }
