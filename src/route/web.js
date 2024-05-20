@@ -37,6 +37,10 @@ let initWebRoutes = (app) => {
     "/api/get-schedule-doctor-by-date",
     doctorController.getScheduleByDate
   );
+  router.get(
+    "/api/get-etra-infor-doctor-by-id",
+    doctorController.getExtraInforDoctorById
+  );
   return app.use("/", router);
 };
 module.exports = initWebRoutes;

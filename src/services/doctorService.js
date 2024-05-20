@@ -276,6 +276,54 @@ let getScheduleByDate = (doctorId, date) => {
     }
   });
 };
+let getExtraInforDoctorById = (doctorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!doctorId) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required doctorId",
+        });
+      } else {
+        let data = await db.Doctor_Infor.findOne({
+          where: {
+            doctorId: doctorId,
+          },
+          attributes: {
+            exclude: ["id", "doctorId"],
+          },
+          nest: true,
+          raw: true,
+          include: [
+            {
+              model: db.Allcode,
+              as: "priceTypeData",
+              attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "provinceTypeData",
+              attributes: ["valueEn", "valueVi"],
+            },
+            {
+              model: db.Allcode,
+              as: "paymentTypeData",
+              attributes: ["valueEn", "valueVi"],
+            },
+          ],
+        });
+        if (!data) data = {};
+
+        resolve({
+          errCode: 0,
+          data: data,
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   getTopDoctorHome,
   getAllDoctors,
@@ -283,6 +331,7 @@ module.exports = {
   getDetailDoctorByIds,
   bulkCreateSchedule,
   getScheduleByDate,
+  getExtraInforDoctorById,
 };
 
 // let getScheduleByDate = (doctorId, date)=>{
