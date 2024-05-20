@@ -76,5 +76,12 @@
     "name-clicin": "Tên phòng khám",
     "clinic-address": "Địa chỉ phòng khám",
     "note": "Ghi chú thêm"
+  },
+  "doctorextrainfor": {
+    "examination-price": "GIÁ KHÁM :",
+    "payment": "Người bệnh có thể thanh toán chi phí bằng hình thức",
+    "details": "Xem chi tiết ",
+    "hide": "Ẩn bảng giá ",
+    "examination-address": "Địa chỉ khám "
   }
 }

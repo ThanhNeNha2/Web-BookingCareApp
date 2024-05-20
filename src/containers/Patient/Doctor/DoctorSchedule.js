@@ -58,8 +58,8 @@ class DoctorSchedule extends Component {
         this.props.doctorIdFromParent,
         date
       );
-      console.log("check lần nũa ", date);
-      console.log("check lần nũa 3 ", this.props.doctorIdFromParent);
+      // console.log("check lần nũa ", date);
+      // console.log("check lần nũa 3 ", this.props.doctorIdFromParent);
 
       this.setState({
         allAvalableTime: res.data,
@@ -81,7 +81,7 @@ class DoctorSchedule extends Component {
   };
   render() {
     let { allDays, allAvalableTime } = this.state;
-    console.log("hihi ", allDays);
+
     return (
       <div className="doctor-schedule-container">
         <div className="doctor-schedule-left">

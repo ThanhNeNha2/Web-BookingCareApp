@@ -76,5 +76,12 @@
     "name-clicin": "Name clicin",
     "clinic-address": "Clicin address",
     "note": "Note "
+  },
+  "doctorextrainfor": {
+    "examination-price": "Examination price :",
+    "payment": "Patients can pay the cost by form",
+    "details": " See details",
+    "hide": "Hide price list",
+    "examination-address": "Examination address"
   }
 }
