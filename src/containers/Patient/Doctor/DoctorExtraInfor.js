@@ -32,7 +32,6 @@ class DoctorExtraInfor extends Component {
   }
   render() {
     let { extraInfor } = this.state;
-    console.log(" check data tra bve jajasdfojgfsdfgfb", extraInfor);
 
     return (
       <div className="doctor-extra-infor-container">
@@ -88,7 +87,7 @@ class DoctorExtraInfor extends Component {
                   <FormattedMessage id="doctorextrainfor.examination-price" />{" "}
                 </div>
                 <div>
-                  <FormattedMessage id="doctorextrainfor.examination-price" /> :{" "}
+                  <FormattedMessage id="doctorextrainfor.examination-price" />{" "}
                   <NumberFormat
                     value={
                       extraInfor && extraInfor.priceTypeData

@@ -1,0 +1,115 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./ProfileDoctor.scss";
+import { LANGUAGES } from "../../../utils";
+import { FormattedMessage } from "react-intl";
+import { getProfileDoctorById } from "../../../services/userService";
+import NumberFormat from "react-number-format";
+class ProfileDoctor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataProfile: {},
+    };
+  }
+
+  async componentDidMount() {
+    let data = await this.getInforDoctor(this.props.doctorId);
+    this.setState({
+      dataProfile: data,
+    });
+  }
+
+  getInforDoctor = async (id) => {
+    let result = {};
+    if (id) {
+      let data = await getProfileDoctorById(id);
+      if (data && data.errCode === 0) {
+        result = data.data;
+      }
+    }
+    return result;
+  };
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.language !== prevProps.language) {
+      let data = await this.getInforDoctor(this.props.doctorId);
+      this.setState({
+        dataProfile: data,
+      });
+    }
+    if (this.props.doctorId !== prevProps.doctorId) {
+      this.getInforDoctor(this.props.doctorId);
+    }
+  }
+  render() {
+    let { dataProfile } = this.state;
+    let { language, isShowDescriptionDoctor } = this.props;
+
+    let nameVi = "";
+    let nameEn = "";
+    if (dataProfile && dataProfile.positionData) {
+      nameVi = `${dataProfile.positionData.valueVi}, ${
+        dataProfile.lastName + " " + dataProfile.firstName
+      }`;
+      nameEn = `${dataProfile.positionData.valueEn}, ${
+        dataProfile.firstName + " " + dataProfile.lastName
+      }`;
+    }
+    console.log("check dataProfile", dataProfile);
+    return (
+      <>
+        <div className="intro-doctor">
+          <div
+            className="content-left"
+            style={{
+              backgroundImage: `url(${
+                dataProfile.image ? dataProfile.image : ""
+              })`,
+            }}
+          ></div>
+          <div className="content-right">
+            <div className="up">
+              {" "}
+              {language === LANGUAGES.VI ? nameVi : nameEn}
+            </div>
+            <div className="down">
+              {" "}
+              {isShowDescriptionDoctor === true &&
+                dataProfile &&
+                dataProfile.Markdown &&
+                dataProfile.Markdown.description && (
+                  <span> {dataProfile.Markdown.description} </span>
+                )}
+            </div>
+          </div>
+        </div>
+        <div className="price mt-3">
+          <NumberFormat
+            value={
+              dataProfile && dataProfile.Doctor_Infor
+                ? this.props.language === LANGUAGES.VI
+                  ? dataProfile.Doctor_Infor.priceTypeData.valueVi
+                  : dataProfile.Doctor_Infor.priceTypeData.valueEn
+                : ""
+            }
+            displayType={"text"}
+            thousandSeparator={true}
+            suffix={this.props.language === LANGUAGES.VI ? " VNĐ " : " USD "}
+          />
+        </div>
+      </>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    language: state.app.language,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileDoctor);
