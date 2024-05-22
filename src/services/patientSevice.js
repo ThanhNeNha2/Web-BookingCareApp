@@ -1,4 +1,5 @@
 import db from "../models/index";
+import emailService from "../services/emailService";
 require("dotenv").config();
 let postBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -9,6 +10,14 @@ let postBookAppointment = (data) => {
           errMessage: "Missing required email",
         });
       } else {
+        await emailService.sendSimplEmail({
+          reciverEmail: data.email,
+          patientName: data.fullName,
+          time: data.timeString,
+          doctorName: data.doctorName,
+          language: data.language,
+          link: "https://www.facebook.com/xinmotchen188",
+        });
         let user = await db.User.findOrCreate({
           where: { email: data.email },
           defaults: {
