@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./ProfileDoctor.scss";
-import { LANGUAGES } from "../../../utils";
 import { FormattedMessage } from "react-intl";
 import { getProfileDoctorById } from "../../../services/userService";
+import { LANGUAGES } from "../../../utils";
 import NumberFormat from "react-number-format";
 import _ from "lodash";
 import moment from "moment";
