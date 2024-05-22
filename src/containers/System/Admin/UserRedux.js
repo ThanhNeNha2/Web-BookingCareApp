@@ -232,7 +232,7 @@ class UserRedux extends Component {
     return (
       <div className="user-redux-container">
         <div className="title">User Redux vo chí thanh </div>;
-        <div> {isLoadingGender == true ? "Loading data " : ""}</div>
+        <div> {isLoadingGender === true ? "Loading data " : ""}</div>
         <div className="user-redux-body">
           <div className="container">
             <div className="row">

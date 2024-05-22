@@ -82,7 +82,7 @@ class ProfileDoctor extends Component {
         dataProfile.firstName + " " + dataProfile.lastName
       }`;
     }
-    console.log("check dataProfile", dataProfile);
+
     return (
       <>
         <div className="intro-doctor">
