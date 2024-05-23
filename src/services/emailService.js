@@ -16,7 +16,7 @@ let sendSimplEmail = async (data) => {
     from: '"Bệnh viện Chí Thanh" <maddison53@ethereal.email>',
     to: data.reciverEmail,
     subject: "Thông tin đặt lịch khám bệnh ",
-    text: `Xin chào ${data.patientName}`,
+    text: `Xin chào ${data.patientName ? data.patientName : "Quý khách"}`,
     html: getBodyHTMLEmail(data),
   });
 };
