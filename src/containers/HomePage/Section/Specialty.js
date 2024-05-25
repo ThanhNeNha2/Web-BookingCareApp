@@ -4,9 +4,26 @@ import "./Specialty.scss";
 import { FormattedMessage } from "react-intl";
 // Import css files
 import Slider from "react-slick";
+import { getAllSpecialty } from "../../../services/userService";
 
 class Specialty extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSpecialty: [],
+    };
+  }
+  async componentDidMount() {
+    let res = await getAllSpecialty();
+    if (res && res.errCode === 0) {
+      this.setState({
+        dataSpecialty: res.data ? res.data : [],
+      });
+    }
+  }
   render() {
+    let { dataSpecialty } = this.state;
+    console.log(">>>> check dataSpecialty", dataSpecialty);
     return (
       <div className="section-share section-specialty">
         <div className="section-container">
@@ -16,35 +33,21 @@ class Specialty extends Component {
           </div>
           <div className="section-body">
             <Slider {...this.props.settings}>
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 1</div>
-              </div>
-
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 2</div>
-              </div>
-
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 3</div>
-              </div>
-
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 4</div>
-              </div>
-
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 5</div>
-              </div>
-
-              <div className="section-customize">
-                <div className="bg-image section-specialty" />
-                <div> Cơ xương khớp 6</div>
-              </div>
+              {dataSpecialty &&
+                dataSpecialty.length > 0 &&
+                dataSpecialty.map((item, idex) => {
+                  return (
+                    <div className="section-customize">
+                      <div
+                        className="bg-image section-specialty"
+                        style={{
+                          backgroundImage: `url(${item.image})`,
+                        }}
+                      />
+                      <div> {item.name}</div>
+                    </div>
+                  );
+                })}
             </Slider>
           </div>
         </div>
