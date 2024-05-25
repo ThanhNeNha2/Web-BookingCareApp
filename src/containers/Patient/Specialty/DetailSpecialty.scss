@@ -1,0 +1,31 @@
+.detail-specialty-container {
+  .description-specialty {
+    border: 1px solid red;
+    height: 200px;
+  }
+  .detail-specialty-body {
+    margin: 0 150px;
+  }
+  .each-doctor {
+    display: flex;
+    width: 100%;
+    min-height: 300px;
+    margin: 15px 0;
+    border: 1px solid green;
+    .dt-content-left {
+      width: 50%;
+    }
+    .dt-content-right {
+      width: 50%;
+      border: 1px solid orange;
+      padding: 10px;
+      .doctor-extra-info {
+        .doctor-extra-info-container {
+          padding-left: 0 !important;
+        }
+      }
+      .doctor-schedule {
+      }
+    }
+  }
+}

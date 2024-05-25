@@ -111,7 +111,7 @@ class ManageDoctor extends Component {
         return item.value === provinceId;
       });
     }
-    console.log("check res ", res);
+
     if (res && res.errCode === 0 && res.data && res.data.Markdown) {
       let Markdown = res.data.Markdown;
       this.setState({
