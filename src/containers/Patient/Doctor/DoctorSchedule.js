@@ -26,6 +26,17 @@ class DoctorSchedule extends Component {
     //   moment(new Date()).locale("en").format("dddd - DD/MM")
     // );
     let allDays = this.getArrDays();
+
+    if (this.props.doctorIdFromParent) {
+      let res = await getScheduleDoctorByDate(
+        this.props.doctorIdFromParent,
+        allDays[0].value
+      );
+      // khi reload khoong maat lich kham
+      this.setState({
+        allAvalableTime: res.data ? res.data : [],
+      });
+    }
     this.setState({
       allDays: allDays,
     });
@@ -56,16 +67,14 @@ class DoctorSchedule extends Component {
       });
     }
     if (this.props.doctorIdFromParent !== prevProps.doctorIdFromParent) {
-      let date = this.state.allDays[0].value;
+      let allDays = this.getArrDays();
       let res = await getScheduleDoctorByDate(
         this.props.doctorIdFromParent,
-        date
+        allDays[0].value
       );
-      // console.log("check lần nũa ", date);
-      // console.log("check lần nũa 3 ", this.props.doctorIdFromParent);
-
+      // khi reload khoong maat lich kham
       this.setState({
-        allAvalableTime: res.data,
+        allAvalableTime: res.data ? res.data : [],
       });
     }
   }

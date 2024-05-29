@@ -11,7 +11,7 @@ import {
   getAllDetailSpecialtyById,
   getAllCodeService,
 } from "../../../services/userService";
-import _ from "lodash";
+import _, { result } from "lodash";
 class DetailSpecialty extends Component {
   constructor(props) {
     super(props);
@@ -47,10 +47,21 @@ class DetailSpecialty extends Component {
             arrDoctorId.push(item.doctorId);
           });
         }
+        let dataProvince = resProvince.data;
+
+        if (dataProvince && dataProvince.length > 0) {
+          dataProvince.push({
+            createdAt: null,
+            keyMap: "ALL",
+            type: "PROVINCE",
+            valueEn: "ALL",
+            valueVi: "Toàn quốc",
+          });
+        }
         this.setState({
           dataDetailSpecialty: res.data,
           arrDoctorId: arrDoctorId,
-          listProvince: resProvince.data,
+          listProvince: dataProvince ? dataProvince.reverse() : [],
         });
       } else {
       }
@@ -58,6 +69,38 @@ class DetailSpecialty extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {}
+
+  handleOnchangeSelect = async (event) => {
+    if (
+      this.props.match &&
+      this.props.match.params &&
+      this.props.match.params.id
+    ) {
+      let id = this.props.match.params.id;
+      let location = event.target.value;
+
+      let res = await getAllDetailSpecialtyById({
+        id: id,
+        location: location,
+      });
+
+      if (res && res.errCode === 0) {
+        let data = res.data;
+        let arrDoctorId = [];
+        if (data && !_.isEmpty(res.data)) {
+          let arr = data.doctorSpecialty;
+          arr.map((item, index) => {
+            arrDoctorId.push(item.doctorId);
+          });
+        }
+
+        this.setState({
+          dataDetailSpecialty: res.data,
+          arrDoctorId: arrDoctorId,
+        });
+      }
+    }
+  };
   render() {
     let { arrDoctorId, dataDetailSpecialty, listProvince } = this.state;
     console.log("jjiioihfksdsdf", this.state);
@@ -75,8 +118,12 @@ class DetailSpecialty extends Component {
             )}
           </div>
           <div className="search-sp-doctor">
-            <select class="form-control col-1">
-              <option> Chọn tỉnh </option>{" "}
+            <select
+              class="form-control col-2"
+              onChange={(event) => {
+                this.handleOnchangeSelect(event);
+              }}
+            >
               {listProvince &&
                 listProvince.length > 0 &&
                 listProvince.map((item, index) => {
@@ -100,7 +147,8 @@ class DetailSpecialty extends Component {
                       <ProfileDoctor
                         doctorId={item}
                         isShowDescriptionDoctor={true}
-                        // dataTime={dataTime}
+                        isShowLinkDetail={true}
+                        isShowPrice={false}
                       />
                     </div>
                   </div>

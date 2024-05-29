@@ -7,6 +7,7 @@ import { LANGUAGES } from "../../../utils";
 import NumberFormat from "react-number-format";
 import _ from "lodash";
 import moment from "moment";
+import { Link } from "react-router-dom";
 class ProfileDoctor extends Component {
   constructor(props) {
     super(props);
@@ -70,8 +71,8 @@ class ProfileDoctor extends Component {
   };
   render() {
     let { dataProfile } = this.state;
-    let { language, isShowDescriptionDoctor, dataTime } = this.props;
-
+    let { language, isShowDescriptionDoctor, dataTime, doctorId } = this.props;
+    console.log("check kĩ kĩ ", doctorId);
     let nameVi = "";
     let nameEn = "";
     if (dataProfile && dataProfile.positionData) {
@@ -113,20 +114,31 @@ class ProfileDoctor extends Component {
             </div>
           </div>
         </div>
-        <div className="price mt-3">
-          <NumberFormat
-            value={
-              dataProfile && dataProfile.Doctor_Infor
-                ? this.props.language === LANGUAGES.VI
-                  ? dataProfile.Doctor_Infor.priceTypeData.valueVi
-                  : dataProfile.Doctor_Infor.priceTypeData.valueEn
-                : ""
-            }
-            displayType={"text"}
-            thousandSeparator={true}
-            suffix={this.props.language === LANGUAGES.VI ? " VNĐ " : " USD "}
-          />
-        </div>
+
+        {this.props.isShowLinkDetail === true && (
+          <div className="detail">
+            <Link to={`/detail-doctor/${doctorId}`}> Xem chi tiết</Link>
+          </div>
+        )}
+
+        {this.props.isShowPrice === true && (
+          <div className="price mt-3">
+            {" "}
+            Giá Khám:{" "}
+            <NumberFormat
+              value={
+                dataProfile && dataProfile.Doctor_Infor
+                  ? this.props.language === LANGUAGES.VI
+                    ? dataProfile.Doctor_Infor.priceTypeData.valueVi
+                    : dataProfile.Doctor_Infor.priceTypeData.valueEn
+                  : ""
+              }
+              displayType={"text"}
+              thousandSeparator={true}
+              suffix={this.props.language === LANGUAGES.VI ? " VNĐ " : " USD "}
+            />
+          </div>
+        )}
       </>
     );
   }
