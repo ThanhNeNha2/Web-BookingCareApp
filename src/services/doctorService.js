@@ -84,18 +84,18 @@ let checkRequiredFields = (inputData) => {
   return { isValid, element };
 };
 let saveDetailInforDoctor = (inputData) => {
-  console.log("check đầu vào  inputData ", inputData);
+  
   return new Promise(async (resolve, reject) => {
     try {
       let checkObj = await checkRequiredFields(inputData);
-      console.log("check checkObj ", checkObj);
+      
       if (checkObj.isValid === false) {
         resolve({
           errCode: 1,
           errMessage: `Missing parameter ${checkObj.element} `,
         });
       } else {
-        if (inputData.action === "CREATE") {
+        if (inputData.action === "ADD") {
           await db.Markdown.create({
             contentHTML: inputData.contentHTML,
             contentMarkdown: inputData.contentMarkdown,
