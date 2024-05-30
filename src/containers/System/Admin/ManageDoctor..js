@@ -73,17 +73,18 @@ class ManageDoctor extends Component {
       nameClinic: this.state.nameClinic,
       addressClinic: this.state.addressClinic,
       note: this.state.note,
-      // clinicId:
-      //   this.state.selectedClinic && this.state.selectedClinic.value
-      //     ? this.state.selectedClinic
-      //     : "",
+      clinicId:
+        this.state.selectedClinic && this.state.selectedClinic.value
+          ? this.state.selectedClinic.value
+          : "",
       specialtyId: this.state.selectedSpecialty.value,
     });
   };
 
   handleChangeSelect = async (selectedOption) => {
     this.setState({ selectedOption });
-    let { listPayment, listProvince, listPrice, listSpecialty } = this.state;
+    let { listPayment, listProvince, listPrice, listSpecialty, listClinic } =
+      this.state;
     let res = await getDetailInforDoctor(selectedOption.value);
     let nameClinic = "",
       provinceId = "",
@@ -95,7 +96,9 @@ class ManageDoctor extends Component {
       findPriceId = "",
       findProvinceId = "",
       selectedSpecialty = "",
-      specialtyId = "";
+      specialtyId = "",
+      clinicId = "",
+      selectedClinic = "";
 
     if (res && res.data && res.data.Doctor_Infor) {
       provinceId = res.data.Doctor_Infor.provinceId;
@@ -105,6 +108,7 @@ class ManageDoctor extends Component {
       addressClinic = res.data.Doctor_Infor.addressClinic;
       note = res.data.Doctor_Infor.note;
       specialtyId = res.data.Doctor_Infor.specialtyId;
+      clinicId = res.data.Doctor_Infor.clinicId;
       findPaymentId = listPayment.find((item) => {
         return item.value === paymentId;
       });
@@ -114,13 +118,17 @@ class ManageDoctor extends Component {
       findProvinceId = listProvince.find((item) => {
         return item.value === provinceId;
       });
-      selectedSpecialty = listProvince.find((item) => {
+      selectedSpecialty = listSpecialty.find((item) => {
         return item && item.value === specialtyId;
+      });
+      selectedClinic = listClinic.find((item) => {
+        return item && item.value === clinicId;
       });
     }
 
     if (res && res.errCode === 0 && res.data && res.data.Markdown) {
       let Markdown = res.data.Markdown;
+      // set lại để hiển thị trên client
       this.setState({
         contentHTML: Markdown.contentHTML,
         contentMarkdown: Markdown.contentMarkdown,
@@ -133,6 +141,7 @@ class ManageDoctor extends Component {
         selectedPrice: findPriceId,
         selectedProvince: findProvinceId,
         selectedSpecialty: selectedSpecialty,
+        selectedClinic: selectedClinic,
       });
     } else {
       this.setState({
@@ -147,6 +156,8 @@ class ManageDoctor extends Component {
         selectedPrice: "",
         selectedSpecialty: "",
         selectedProvince: "",
+        selectedSpecialty: "",
+        selectedClinic: "",
       });
     }
   };
@@ -208,6 +219,14 @@ class ManageDoctor extends Component {
           result.push(object);
         });
       }
+      if (type === "CLINIC") {
+        inputData.map((item, index) => {
+          let object = {};
+          object.label = item.name;
+          object.value = item.id;
+          result.push(object);
+        });
+      }
     }
     return result;
   };
@@ -246,7 +265,7 @@ class ManageDoctor extends Component {
     if (
       prevProps.allRequiredDoctorInfor !== this.props.allRequiredDoctorInfor
     ) {
-      let { resPayment, resPrice, resProvince, resSpecialty } =
+      let { resPayment, resPrice, resProvince, resSpecialty, resClinic } =
         this.props.allRequiredDoctorInfor;
       let listresPayment = this.buildDataInputSelect(resPayment, "PAYMENT");
       let listresPrice = this.buildDataInputSelect(resPrice, "PRICE");
@@ -255,12 +274,13 @@ class ManageDoctor extends Component {
         resSpecialty,
         "SPECIALTY"
       );
-
+      let listresClinic = this.buildDataInputSelect(resClinic, "CLINIC");
       this.setState({
         listPayment: listresPayment,
         listPrice: listresPrice,
         listProvince: listresProvince,
         listSpecialty: listresSpecialty,
+        listClinic: listresClinic,
       });
     }
   }

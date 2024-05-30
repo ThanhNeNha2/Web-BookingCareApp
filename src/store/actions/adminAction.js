@@ -2,12 +2,14 @@ import actionTypes from "./actionTypes";
 import { editUserService, getAllCodeService } from "../../services/userService";
 import { createNewUserService } from "../../services/userService";
 import { getALLUsers } from "../../services/userService";
+
 import {
   getAllDoctors,
   deleteUserService,
   getTopDoctorHomeService,
   saveDetailDoctorService,
   getAllSpecialty,
+  getAllClinic,
 } from "../../services/userService";
 import { toast } from "react-toastify";
 
@@ -307,6 +309,7 @@ export const getRequiredDoctorInfor = () => {
       let resPayment = await getAllCodeService("PAYMENT");
       let resProvince = await getAllCodeService("PROVINCE");
       let resSpecialty = await getAllSpecialty();
+      let resClinic = await getAllClinic();
       console.log(" laay tu data ", resSpecialty);
       if (
         resPrice &&
@@ -314,13 +317,16 @@ export const getRequiredDoctorInfor = () => {
         resPayment &&
         resPayment.errCode === 0 &&
         resProvince &&
-        resProvince.errCode === 0
+        resProvince.errCode === 0 &&
+        resClinic &&
+        resClinic.errCode === 0
       ) {
         let data = {
           resPrice: resPrice.data,
           resPayment: resPayment.data,
           resProvince: resProvince.data,
           resSpecialty: resSpecialty.data,
+          resClinic: resClinic.data,
         };
         console.log(" laay tu data ", resSpecialty.data);
 
