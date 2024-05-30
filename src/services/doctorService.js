@@ -84,11 +84,10 @@ let checkRequiredFields = (inputData) => {
   return { isValid, element };
 };
 let saveDetailInforDoctor = (inputData) => {
-  
   return new Promise(async (resolve, reject) => {
     try {
       let checkObj = await checkRequiredFields(inputData);
-      
+
       if (checkObj.isValid === false) {
         resolve({
           errCode: 1,
@@ -140,7 +139,7 @@ let saveDetailInforDoctor = (inputData) => {
           doctorInfor.nameClinic = inputData.nameClinic;
           doctorInfor.note = inputData.note;
           doctorInfor.specialtyId = inputData.specialtyId;
-          // doctorInfor.clinicId = inputData.clinicId;
+          doctorInfor.clinicId = inputData.clinicId;
           await doctorInfor.save();
         } else {
           await db.Doctor_Infor.create({
@@ -152,7 +151,7 @@ let saveDetailInforDoctor = (inputData) => {
             nameClinic: inputData.nameClinic,
             note: inputData.note,
             specialtyId: inputData.specialtyId,
-            // clinicId: inputData.clinicId,
+            clinicId: inputData.clinicId,
           });
         }
       }
