@@ -37,6 +37,8 @@
     },
     "doctor": {
       "manage-schedule": "Manage Doctor is schedule"
+      ,"manage-patient":"Manage schedule patient"
+
     }
   },
   "manage-user": {
