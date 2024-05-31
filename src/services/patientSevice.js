@@ -12,7 +12,15 @@ let buildEmail = (doctorId, token) => {
 let postBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.email || !data.doctorId || !data.timeType || !data.date) {
+      if (
+        !data.email ||
+        !data.doctorId ||
+        !data.timeType ||
+        !data.date ||
+        !data.fullName ||
+        !data.selectedGender ||
+        !data.address
+      ) {
         resolve({
           errCode: 1,
           errMessage: "Missing required email",
@@ -33,6 +41,9 @@ let postBookAppointment = (data) => {
           defaults: {
             email: data.email,
             roleId: "R3",
+            firstName: data.fullName,
+            gender: data.selectedGender,
+            address: data.address,
           },
         });
         if (user && user[0]) {
