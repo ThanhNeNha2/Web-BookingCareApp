@@ -4,23 +4,54 @@ import "./ManagePatient.scss";
 import { LANGUAGES } from "../../../utils";
 import { FormattedMessage } from "react-intl";
 import DatePicker from "../../../components/Input/DatePicker";
+import { getAllPatientForDoctor } from "../../../services/userService";
+import moment from "moment";
 
 class ManagePatient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDate: new Date(),
+      currentDate: moment(new Date()).startOf("day").valueOf(),
+      dataPatient: [],
     };
   }
   handleOnchangeDatePicker = (date) => {
-    this.setState({
-      currentDate: date[0],
-    });
+    this.setState(
+      {
+        currentDate: date[0],
+      },
+      () => {
+        let { user } = this.props;
+        let { currentDate } = this.state;
+        let formatedDate = new Date(currentDate).getTime();
+        this.getDataPatient(user, formatedDate);
+      }
+    );
   };
-  componentDidMount() {}
+  async componentDidMount() {
+    let { user } = this.props;
+    let { currentDate } = this.state;
+    let formatedDate = new Date(currentDate).getTime();
+    this.getDataPatient(user, formatedDate);
+  }
 
+  getDataPatient = async (user, formatedDate) => {
+    let res = await getAllPatientForDoctor({
+      doctorId: user.id,
+      date: formatedDate,
+    });
+    if (res && res.errCode === 0) {
+      this.setState({
+        dataPatient: res.data,
+      });
+    }
+  };
+  handleBtnConfirm = () => {
+    alert("hihiih");
+  };
   async componentDidUpdate(prevProps, prevState, snapshot) {}
   render() {
+    let { dataPatient } = this.state;
     return (
       <div className="manage-patient-container container">
         <div className="m-p-title">Quản lý bệnh nhân khám bệnh</div>
@@ -35,15 +66,51 @@ class ManagePatient extends Component {
           </div>
           <div className="col-12 table-manage-patient">
             <table className="" style={{ width: "100%" }}>
-              <tr>
-                <th>Name</th>
-                <th colSpan="2">Telephone</th>
-              </tr>
-              <tr>
-                <td>hihi</td>
-                <td>dsfsd</td>
-                <td>sdfsf</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <th>STT</th>
+                  <th>Thời gian </th>
+                  <th>Họ và tên </th>
+                  <th>Giới tính </th>
+                  <th>Actions</th>
+                </tr>
+                {dataPatient && dataPatient.length > 0 ? (
+                  dataPatient.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>
+                          {this.props.language === LANGUAGES.VI
+                            ? item.timeTypeDataPatient.valueVi
+                            : item.timeTypeDataPatient.valueEn}
+                        </td>
+
+                        <td>{item.patientData.firstName}</td>
+                        <td>
+                          {this.props.language === LANGUAGES.VI
+                            ? item.patientData.genderData.valueVi
+                            : item.patientData.genderData.valueEn}
+                        </td>
+                        <td>
+                          {" "}
+                          <button
+                            className="btn btn-success"
+                            onClick={() => {
+                              this.handleBtnConfirm(item);
+                            }}
+                          >
+                            Xác nhận{" "}
+                          </button>{" "}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div>Không có lịch </div>
+                  </>
+                )}
+              </tbody>
             </table>
           </div>
         </div>
@@ -55,6 +122,8 @@ class ManagePatient extends Component {
 const mapStateToProps = (state) => {
   return {
     language: state.app.language,
+
+    user: state.user.userInfo,
   };
 };
 
