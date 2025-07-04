@@ -1,6 +1,7 @@
 import db from "../models/index";
 require("dotenv").config();
 import _, { includes, reject } from "lodash";
+import emailService from "../services/emailService";
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getTopDoctorHome = (limitInput) => {
   return new Promise(async (resolve, reject) => {
@@ -458,6 +459,40 @@ let getListPatientForDoctors = (doctorId, date) => {
     }
   });
 };
+let sendRemedy = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.email || !data.doctorId || !data.patientId || !data.timeType) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing required parameters",
+        });
+      } else {
+        let appointment = await db.Booking.findOne({
+          where: {
+            doctorId: data.doctorId,
+            patientId: data.patientId,
+            timeType: data.timeType,
+            statusId: "S2",
+          },
+          raw: false,
+        });
+        if (appointment) {
+          appointment.statusId = "S3";
+
+          await appointment.save();
+        }
+        await emailService.sendAttachments(data);
+        resolve({
+          errCode: 0,
+          errMessage: "ok",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   getTopDoctorHome,
   getAllDoctors,
@@ -468,6 +503,7 @@ module.exports = {
   getExtraInforDoctorById,
   getProfileDoctorById,
   getListPatientForDoctors,
+  sendRemedy,
 };
 
 // let getScheduleByDate = (doctorId, date)=>{
